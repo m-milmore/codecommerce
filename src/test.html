@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./test.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h5>TEST</h5>
+    <!-- <div className="radio-buttons-container">
+      <input
+        type="radio"
+        id="signIn"
+        name="accessType"
+        value="signIn"
+        checked
+      />
+      <label htmlFor="signIn">SIGN IN</label>
+      <input type="radio" id="signUp" name="accessType" value="signUp" />
+      <label htmlFor="signUp">CREATE ACCOUNT</label>
+    </div> -->
+
+    <!-- <div>I cannot be focused.</div>
+
+    <div tabindex="0">I am focusable.</div> -->
+
+    <p id="anim">
+      The Caterpillar and Alice looked at each other for some time in silence:
+      at last the Caterpillar took the hookah out of its mouth, and addressed
+      her in a languid, sleepy voice.
+    </p>
+    <button onclick="test()">Click</button>
+  </body>
+  <script>
+    function test() {
+      var el = document.getElementById("anim");
+      el.style.animation = "none";
+      el.offsetHeight;
+      el.style.animation = null;
+    }
+  </script>
+</html>

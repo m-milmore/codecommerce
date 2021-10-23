@@ -1,0 +1,422 @@
+import React from "react";
+import "./LoginSignupScreen.css";
+import { PASSWORD_RULES, EYE_ICONS, accounts } from "../../constants";
+import RadioButtons from "./RadioButtons";
+import InputBase from "./InputBase";
+import Facebook from "./Facebook";
+
+const INIT_STATE = {
+  accessType: "signIn",
+  emailInput: "q@q.com",
+  emailLabel: "E-Mail",
+  emailError: "",
+  passwordInput: "qqqqqQ@2",
+  passwordLabel: "Password",
+  passwordError: "",
+  passwordType: "password",
+  eyeIcon: EYE_ICONS["SHOW"],
+  confirmPasswordInput: "qqqqqQ@2",
+  confirmPasswordError: "",
+  confirmPasswordType: "password",
+  confirmEyeIcon: EYE_ICONS["SHOW"],
+  firstNameInput: "Jim",
+  firstNameError: "",
+  lastNameInput: "Jacks",
+  lastNameError: "",
+  postalCodeInput: "12345",
+  postalCodeError: "",
+  errorMessage: false,
+  passwordMessage: false,
+  submitButton: "SIGN IN",
+  fbuser: "",
+};
+
+class LoginSignupScreen extends React.Component {
+  constructor() {
+    super();
+    this.state = INIT_STATE;
+  }
+
+  handleCloseButton = (props) => {
+    this.setState(INIT_STATE);
+    this.props.handleShowScreen("loginScreen", "startButton");
+  };
+
+  initSignIn = () => {
+    this.setState({ emailLabel: "E-Mail" });
+    this.setState({ passwordLabel: "Password" });
+    this.setState({ submitButton: "SIGN IN" });
+  };
+
+  initSignUp = () => {
+    this.setState({ emailLabel: "Your E-Mail Address *" });
+    this.setState({ passwordLabel: "Create Password *" });
+    this.setState({ submitButton: "SAVE" });
+  };
+
+  handleRadioChange = ({ target: { value } }) => {
+    this.setState({ accessType: value });
+    value === "signIn" ? this.initSignIn() : this.initSignUp();
+  };
+
+  handleStateChange = ({ target: { name, value } }) => {
+    let re = /.*/;
+    switch (name) {
+      case "emailInput":
+        break;
+      case ("passwordInput", "confirmPasswordInput"):
+        re = /^[-A-Za-z0-9!@#$%^&*()_+]*$/;
+        break;
+      case ("firstNameInput", "lastNameInput"):
+        re = /^[-A-Za-z0-9]*$/;
+        break;
+      case "postalCodeInput":
+        re = /^[0-9]*$/;
+        break;
+      default:
+        console.log(`${name} is not accounted for.`);
+    }
+    if (re.test(value)) {
+      this.setState({ [name]: value });
+    }
+  };
+
+  handleEyeIcon = (passNo1OrNo2 = "") => {
+    const passObj =
+      passNo1OrNo2 === "password"
+        ? { pass: "passwordType", eye: "eyeIcon" }
+        : { pass: "confirmPasswordType", eye: "confirmEyeIcon" };
+    this.state[passObj.pass] === "text"
+      ? this.setState({
+          [passObj.pass]: "password",
+          [passObj.eye]: EYE_ICONS["SHOW"],
+        })
+      : this.setState({
+          [passObj.pass]: "text",
+          [passObj.eye]: EYE_ICONS["HIDE"],
+        });
+  };
+
+  isPasswordCompliant = () => {
+    const array = this.state.passwordInput.split("");
+    const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const specials = [
+      "-",
+      "!",
+      "@",
+      "#",
+      "$",
+      "%",
+      "^",
+      "&",
+      "*",
+      "(",
+      ")",
+      "_",
+      "+",
+    ];
+    if (!array.some((ele) => ele === ele.toUpperCase())) {
+      this.setState({
+        passwordError: "Passwords must include at least 1 capital letter.",
+      });
+      return false;
+    }
+    if (!array.some((ele) => ele === ele.toLowerCase())) {
+      this.setState({
+        passwordError: "Passwords must include at least 1 small letter.",
+      });
+      return false;
+    }
+    if (array.filter((ele) => numbers.includes(ele)).length !== 1) {
+      this.setState({ passwordError: "Passwords must include 1 number." });
+      return false;
+    }
+    if (array.filter((ele) => specials.includes(ele)).length !== 1) {
+      this.setState({
+        passwordError: "Passwords must include 1 special character.",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  gotoCartScreen = (username) => {
+    this.setState({
+      errorMessage: false,
+      passwordMessage: false,
+      passwordType: "password",
+      eyeIcon: EYE_ICONS["SHOW"],
+      confirmPasswordType: "password",
+      confirmEyeIcon: EYE_ICONS["SHOW"],
+    });
+    this.props.handleUsername(username);
+    this.props.handleShowScreen("loginScreen", "cartScreen");
+  };
+
+  handleSubmit = (e, props) => {
+    e.preventDefault();
+    this.setState({
+      emailError: "",
+      passwordError: "",
+      confirmPasswordError: "",
+      firstNameError: "",
+      lastNameError: "",
+      postalCodeError: "",
+    });
+    setTimeout(() => {
+      if (this.state.emailInput === "") {
+        this.setState({
+          emailError: "E-Mail Address missing...",
+          errorMessage: true,
+        });
+      } else if (
+        this.state.accessType === "signUp" &&
+        accounts.some((account) => account === this.state.emailInput)
+      ) {
+        this.setState({
+          emailError: "An account for that email already exist",
+          errorMessage: true,
+        });
+      } else if (this.state.passwordInput === "") {
+        this.setState({
+          passwordError: "Password missing...",
+          errorMessage: true,
+        });
+      } else if (!this.isPasswordCompliant()) {
+        this.setState({ passwordMessage: true, errorMessage: true });
+      } else if (
+        this.state.accessType === "signUp" &&
+        this.state.confirmPasswordInput === ""
+      ) {
+        this.setState({
+          confirmPasswordError: "Confirmation Password missing...",
+          errorMessage: true,
+        });
+      } else if (
+        this.state.accessType === "signUp" &&
+        this.state.passwordInput !== this.state.confirmPasswordInput
+      ) {
+        this.setState({
+          confirmPasswordError: "Passwords mismatched...",
+          errorMessage: true,
+        });
+      } else if (
+        this.state.accessType === "signUp" &&
+        this.state.firstNameInput === ""
+      ) {
+        this.setState({
+          firstNameError: "First Name missing...",
+          errorMessage: true,
+        });
+      } else if (
+        this.state.accessType === "signUp" &&
+        /\d/.test(this.state.firstNameInput)
+      ) {
+        this.setState({
+          firstNameError: "Please enter a valid First Name",
+          errorMessage: true,
+        });
+      } else if (
+        this.state.accessType === "signUp" &&
+        this.state.lastNameInput === ""
+      ) {
+        this.setState({
+          lastNameError: "Last Name missing...",
+          errorMessage: true,
+        });
+      } else if (
+        this.state.accessType === "signUp" &&
+        /\d/.test(this.state.lastNameInput)
+      ) {
+        this.setState({
+          lastNameError: "Please enter a valid Last Name",
+          errorMessage: true,
+        });
+      } else if (
+        this.state.accessType === "signUp" &&
+        this.state.postalCodeInput === ""
+      ) {
+        this.setState({
+          postalCodeError: "Postal Code missing...",
+          errorMessage: true,
+        });
+      } else {
+        this.gotoCartScreen(
+          `${this.state.firstNameInput} ${this.state.lastNameInput}`
+        );
+      }
+    }, 50);
+  };
+
+  handleFbUsername = (username) => {
+    this.setState({ fbUser: username });
+    this.gotoCartScreen(this.state.fbUser);
+  };
+
+  render(props) {
+    const {
+      accessType,
+      errorMessage,
+      emailInput,
+      emailLabel,
+      emailError,
+      passwordInput,
+      passwordLabel,
+      passwordError,
+      passwordType,
+      eyeIcon,
+      passwordMessage,
+      confirmPasswordInput,
+      confirmPasswordError,
+      confirmPasswordType,
+      confirmEyeIcon,
+      firstNameInput,
+      firstNameError,
+      lastNameInput,
+      lastNameError,
+      postalCodeInput,
+      postalCodeError,
+      submitButton,
+    } = this.state;
+
+    return (
+      <div
+        className={`login-signup-container ${
+          this.props.showScreen.loginScreen ? "open" : ""
+        }`}
+      >
+        <div
+          className="close-button-container"
+          onClick={this.handleCloseButton}
+        >
+          <span>&#x2716;</span>
+        </div>
+        <form onSubmit={this.handleSubmit}>
+          <button disabled style={{ display: "none" }}></button>
+          <RadioButtons
+            accessType={accessType}
+            handleRadioChange={this.handleRadioChange}
+          />
+          <span className="error-message">
+            {errorMessage ? (
+              <>
+                We're sorry, but one or more fields are incomplete or incorrect.
+                <br />
+                <u>Find Error(s)</u>.
+              </>
+            ) : (
+              ""
+            )}
+          </span>
+          <InputBase
+            label={emailLabel}
+            error={emailError}
+            type="email"
+            value={emailInput}
+            name="emailInput"
+            onChange={this.handleStateChange}
+            onFocus={() => {
+              this.setState({ emailError: "" });
+            }}
+            minLength="5"
+            maxLength="20"
+          />
+          <InputBase
+            label={passwordLabel}
+            error={passwordError}
+            type={passwordType}
+            value={passwordInput}
+            name="passwordInput"
+            onChange={this.handleStateChange}
+            onFocus={() => {
+              this.setState({ passwordError: "" });
+            }}
+            minLength="8"
+            maxLength="20"
+            typeIs="password"
+            eyeIcon={eyeIcon}
+            handleEyeIcon={() => this.handleEyeIcon("password")}
+          />
+          <span className="password-message">
+            {accessType === "signUp" || passwordMessage ? PASSWORD_RULES : ""}
+          </span>
+          {accessType === "signUp" && (
+            <>
+              <InputBase
+                label="Confirm Password *"
+                error={confirmPasswordError}
+                type={confirmPasswordType}
+                value={confirmPasswordInput}
+                name="confirmPasswordInput"
+                onChange={this.handleStateChange}
+                onFocus={() => {
+                  this.setState({ confirmPasswordError: "" });
+                }}
+                minLength="8"
+                maxLength="20"
+                typeIs="password"
+                eyeIcon={confirmEyeIcon}
+                handleEyeIcon={this.handleEyeIcon}
+              />
+              <InputBase
+                label="First Name *"
+                error={firstNameError}
+                type="text"
+                value={firstNameInput}
+                name="firstNameInput"
+                onChange={this.handleStateChange}
+                onFocus={() => {
+                  this.setState({ firstNameError: "" });
+                }}
+                minLength="2"
+                maxLength="20"
+              />
+              <InputBase
+                label="Surname *"
+                error={lastNameError}
+                type="text"
+                value={lastNameInput}
+                name="lastNameInput"
+                onChange={this.handleStateChange}
+                onFocus={() => {
+                  this.setState({ lastNameError: "" });
+                }}
+                minLength="2"
+                maxLength="20"
+              />
+              <InputBase
+                label="Postcode"
+                error={postalCodeError}
+                type="number"
+                value={postalCodeInput}
+                name="postalCodeInput"
+                onChange={this.handleStateChange}
+                onFocus={() => {
+                  this.setState({ postalCodeErro: "" });
+                }}
+                min={10000}
+                max={99999}
+              />
+            </>
+          )}
+          <button className="submit-button">{submitButton}</button>
+        </form>
+        <div className="hr-container">
+          <hr />
+          <span>or</span>
+          <hr />
+        </div>
+        <Facebook handleFbUsername={this.handleFbUsername} />
+        <span className="span-cancel" onClick={this.handleCloseButton}>
+          Cancel
+        </span>
+        <span className="span-policy">
+          <u>Privacy Policy and Cookies</u>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+          <u>Terms of Sale and Use</u>
+        </span>
+      </div>
+    );
+  }
+}
+
+export default LoginSignupScreen;

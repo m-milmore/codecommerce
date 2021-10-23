@@ -1,0 +1,19 @@
+.table-class {
+  color: black;
+  font-size: 1.25rem;
+  width: 100%;
+  text-align: center;
+}
+
+.no-item-container {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.no-item {
+  color: rgb(88, 88, 88);
+  font-size: 1rem;
+  font-weight: 700;
+  user-select: none;
+}
