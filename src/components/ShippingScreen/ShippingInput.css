@@ -1,0 +1,26 @@
+.shipping-input-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.shipping-input-container label {
+  user-select: none;
+  font-size: 0.8rem;
+  color: black;
+  flex: 0 1 17%;
+  margin: 0;
+  padding: 0;
+}
+
+.shipping-input-container input {
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 0;
+  line-height: 1.75rem;
+  padding-left: 5px;
+  flex: 0 1 50%;
+}

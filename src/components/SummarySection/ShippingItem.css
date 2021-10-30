@@ -1,0 +1,78 @@
+.shipping-item-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-auto-rows: 1fr;
+  width: 100%;
+  padding: 0;
+  margin: 8px 0;
+	background-color: rgba(0, 0, 0, 0.035);
+	border-radius: 4px;
+}
+
+.shipping-item-img-container {
+  margin: 0;
+  padding: 0;
+}
+
+.shipping-item-img-container img {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.shipping-item-container .modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.shipping-item-container dialog {
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.shipping-item-container dialog img {
+  width: 100%;
+}
+
+.shipping-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  padding: 0 5px;
+  user-select: none;
+}
+
+.shipping-info-container h4 {
+  color: black;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  margin-bottom: auto;
+}
+
+.shipping-info-container span {
+  color: black;
+  font-size: 0.75rem;
+  margin: 0;
+  padding: 0;
+}
+
+.item-cost-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.shipping-item-total-price {
+  font-weight: 900;
+}

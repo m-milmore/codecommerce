@@ -32,18 +32,6 @@ hr {
   cursor: pointer;
 }
 
-.modal {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .title-container {
   padding: 0 10px;
   flex: 1;

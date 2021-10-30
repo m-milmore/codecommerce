@@ -11,7 +11,6 @@ class InputBase extends React.Component {
       <div className="input-base-container">
         <LabelErrorContainer label={label} error={error} />
         <input
-          // id="input"
           autoComplete="off"
           className={`${error ? "red-bg" : ""}`}
           {...props}

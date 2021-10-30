@@ -1,34 +1,26 @@
 import React from "react";
 import "./ShippingScreen.css";
-import { formatter } from "../../constants";
-
+import SummarySection from "../SummarySection/SummarySection";
+import ProgressBullets from "../ProgressBullets/ProgressBullets";
+import ShippingInfo from "./ShippingInfo";
 class ShippingScreen extends React.Component {
   render(props) {
-    const { showScreen, handleShowScreen } = this.props;
+    const { account, showScreen, handleProps: {handleShowScreen, handleShippingForm} } = this.props;
     return (
       <div
         className={`shipping-screen-container ${
           showScreen.shippingScreen ? "open" : ""
         }`}
       >
-        <div className="left-side">
-          <div className="progress-bullets">
-            <h4>Progress Bullets</h4>
-          </div>
-          <div className="shipping-info">
-            <h4>Shipping Information</h4>
-          </div>
+        <div>
+          <ProgressBullets showScreen={showScreen} />
+          <ShippingInfo handleShippingForm={handleShippingForm}/>
         </div>
-        <div className="right-side">
-          <div className="summary-container">
-            <h3>Summary</h3>
-          </div>
-          <hr />
-          <div className="items-in-bag">
-            <span>X items in your bag.</span>
-          </div>
-          <hr />
-        </div>
+        <SummarySection
+          account={account}
+          handleShowScreen={handleShowScreen}
+          showScreen={showScreen}
+        />
       </div>
     );
   }

@@ -1,0 +1,34 @@
+.progress-bullets-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: -10px 0 10px;
+  padding: 0;
+	height: 10%;
+}
+
+.progress-bars-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+	width: 100%;
+  margin: 0;
+  padding: 0 45px 0 30px;
+}
+
+.progress-bar {
+  background-color: rgb(84, 84, 84);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  height: 10px;
+}
+
+.progress-bar.light {
+  background-color: rgb(246, 246, 246);
+}

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import LoginSignupScreen from "./components/LoginSignupScreen/LoginSignupScreen";
 import CartScreen from "./components/CartScreen/CartScreen";
 import ShippingScreen from "./components/ShippingScreen/ShippingScreen";
+import { items } from "./constants";
 
 function App() {
   const [showScreen, setShowScreen] = useState({
@@ -10,10 +11,20 @@ function App() {
     loginScreen: false,
     cartScreen: false,
     shippingScreen: false,
-    username: "",
+    paymentScreen: false,
+    confirmationScreen: false,
   });
 
-  React.useEffect(() => {
+  const [account, setAccount] = useState({
+    username: "",
+    itemData: [],
+    cartSubTotal: 0,
+    shippingHandling: 0,
+    discount: 4.5,
+    shippingFormFilled: false,
+  });
+
+  useEffect(() => {
     setTimeout(() => {
       window.scrollTo(0, 0);
       setShowScreen((prevState) => ({
@@ -25,7 +36,22 @@ function App() {
       ...prevState,
       startButton: false,
     }));
+    setAccount((prevState) => ({
+      ...prevState,
+      itemData: items,
+    }));
   }, []);
+
+  useEffect(() => {
+    if (account.itemData) {
+      setAccount((prevState) => ({
+        ...prevState,
+        cartSubTotal: prevState.itemData.reduce(function (acc, obj) {
+          return acc + obj.price * obj.quantity;
+        }, 0),
+      }));
+    }
+  }, [account.itemData]);
 
   const handleShowScreen = (closeMe, openMe) => {
     window.scrollTo(0, 0);
@@ -37,9 +63,40 @@ function App() {
   };
 
   const handleUsername = (username) => {
-    setShowScreen((prevState) => ({
+    setAccount((prevState) => ({
       ...prevState,
       username,
+    }));
+  };
+
+  const handleRemoveItem = (id) => {
+    setAccount((prevState) => ({
+      ...prevState,
+      itemData: prevState.itemData.filter((item) => item.id !== id),
+    }));
+  };
+
+  const handleChangeQuantity = (id, num) => {
+    setAccount((prevState) => ({
+      ...prevState,
+      itemData: prevState.itemData.map((item) =>
+        item.id === id
+          ? num > 0
+            ? item.quantity < 10
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+            : item.quantity > 1
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+          : item
+      ),
+    }));
+  };
+
+  const handleShippingForm = (abs) => {
+    setAccount((prevState) => ({
+      ...prevState,
+      shippingFormFilled: abs,
     }));
   };
 
@@ -54,13 +111,21 @@ function App() {
       </button>
       <LoginSignupScreen
         showScreen={showScreen}
-        handleShowScreen={handleShowScreen}
-        handleUsername={handleUsername}
+        handleProps={{ handleShowScreen, handleUsername }}
       />
-      <CartScreen showScreen={showScreen} handleShowScreen={handleShowScreen} />
+      <CartScreen
+        showScreen={showScreen}
+        account={account}
+        handleProps={{
+          handleShowScreen,
+          handleRemoveItem,
+          handleChangeQuantity,
+        }}
+      />
       <ShippingScreen
         showScreen={showScreen}
-        handleShowScreen={handleShowScreen}
+        handleProps={{ handleShowScreen, handleShippingForm }}
+        account={account}
       />
     </div>
   );

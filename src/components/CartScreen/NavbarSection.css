@@ -1,0 +1,26 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+
+.navbar span {
+  color: rgba(88, 88, 88, 1);
+  font-size: 1rem;
+  margin: 0;
+  user-select: none;
+}
+
+.navbar .back-button {
+  color: black;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.navbar .back-button:hover {
+  color: gray;
+  transform: rotateY(360deg);
+}

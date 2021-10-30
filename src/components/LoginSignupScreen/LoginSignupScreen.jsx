@@ -37,21 +37,30 @@ class LoginSignupScreen extends React.Component {
     this.state = INIT_STATE;
   }
 
-  handleCloseButton = (props) => {
+  handleCloseButton = () => {
+    const { handleShowScreen } = this.props.handleProps;
     this.setState(INIT_STATE);
-    this.props.handleShowScreen("loginScreen", "startButton");
+    handleShowScreen("loginScreen", "startButton");
   };
 
   initSignIn = () => {
-    this.setState({ emailLabel: "E-Mail" });
-    this.setState({ passwordLabel: "Password" });
-    this.setState({ submitButton: "SIGN IN" });
+    this.setState({
+      emailLabel: "E-Mail",
+      emailError: "",
+      passwordLabel: "Password",
+      submitButton: "SIGN IN",
+    });
+    this.setState({
+      errorMessage: this.state.passwordError ? this.state.errorMessage : "",
+    });
   };
 
   initSignUp = () => {
-    this.setState({ emailLabel: "Your E-Mail Address *" });
-    this.setState({ passwordLabel: "Create Password *" });
-    this.setState({ submitButton: "SAVE" });
+    this.setState({
+      emailLabel: "Your E-Mail Address *",
+      passwordLabel: "Create Password *",
+      submitButton: "SAVE",
+    });
   };
 
   handleRadioChange = ({ target: { value } }) => {
@@ -141,6 +150,7 @@ class LoginSignupScreen extends React.Component {
   };
 
   gotoCartScreen = (username) => {
+    const { handleUsername, handleShowScreen } = this.props.handleProps;
     this.setState({
       errorMessage: false,
       passwordMessage: false,
@@ -149,11 +159,11 @@ class LoginSignupScreen extends React.Component {
       confirmPasswordType: "password",
       confirmEyeIcon: EYE_ICONS["SHOW"],
     });
-    this.props.handleUsername(username);
-    this.props.handleShowScreen("loginScreen", "cartScreen");
+    handleUsername(username);
+    handleShowScreen("loginScreen", "cartScreen");
   };
 
-  handleSubmit = (e, props) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.setState({
       emailError: "",
@@ -392,7 +402,7 @@ class LoginSignupScreen extends React.Component {
                 name="postalCodeInput"
                 onChange={this.handleStateChange}
                 onFocus={() => {
-                  this.setState({ postalCodeErro: "" });
+                  this.setState({ postalCodeError: "" });
                 }}
                 min={10000}
                 max={99999}

@@ -1,0 +1,60 @@
+.bullet-container {
+  position: absolute;
+  left: -16px;
+  top: -13px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.bullet-container.last {
+  right: -220px;
+}
+
+.bullet {
+  background-color: rgb(84, 84, 84);
+  border-radius: 100%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.bullet.light {
+  background-color: rgb(228, 228, 228);
+  border: 1px solid rgb(226, 226, 226);
+}
+
+.fa {
+  color: white;
+  font-size: 0.8rem;
+}
+
+.fa.last {
+	font-size: 1.1rem;
+}
+
+.bullet-label {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bullet-label span {
+  font-size: .8rem;
+  user-select: none;
+  color: rgba(84, 84, 84, 0.75);
+  margin: 0;
+  padding: 0;
+  font-weight: 700;
+}
