@@ -1,0 +1,33 @@
+.shipping-radio-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 3fr 10fr;
+  justify-content: flex-start;
+	align-items: flex-start;
+  row-gap: 10px;
+  padding: 0;
+  margin: 0 20px;
+	text-align: left;
+}
+
+.shipping-radio-input {
+	align-self: flex-end;
+}
+
+.shipping-radio-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  line-height: 1.5rem;
+}
+
+.shipping-radio-span {
+  font-size: 1rem;
+  font-weight: 600;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5rem;
+}

@@ -31,14 +31,14 @@ function App() {
     itemData: [],
     cartSubTotal: 0,
     shippingHandling: 0,
-    discount: 4.5,
+    discount: 0,
   });
 
   const [shippingInfo, setShippingInfo] = useState({
     titleInput: "Miss",
-    nameInput: "e",
-    addressInput: "e",
-    cityInput: "e",
+    nameInput: "elanor",
+    addressInput: "e street",
+    cityInput: "e-city",
     stateInput: "Alabama",
     zipInput: "12345",
     countryInput: "USA",
@@ -46,6 +46,7 @@ function App() {
     cellInput: "7654321",
     phoneArea: "456",
     phoneInput: "2345678",
+    shippingOption: "standard",
   });
 
   const [shippingInfoError, setShippingInfoError] = useState(
@@ -80,6 +81,27 @@ function App() {
       }));
     }
   }, [account.itemData]);
+
+  useEffect(() => {
+    const { startButton, loginScreen, cartScreen } = showScreen;
+    setAccount((prevState) => ({
+      ...prevState,
+      discount: startButton || loginScreen || cartScreen ? 0 : 4.5,
+    }));
+  }, [showScreen]);
+
+  useEffect(() => {
+    if (Object.values(shippingInfo).some((el) => el === "")) {
+      setShippingInfoError(INIT_SHIPPING_INFO_ERROR);
+    }
+  }, [shippingInfo]);
+
+  useEffect(() => {
+    setAccount((prevState) => ({
+      ...prevState,
+      shippingHandling: shippingInfo.shippingOption === "standard" ? 0 : 5,
+    }));
+  }, [shippingInfo.shippingOption]);
 
   const handleShowScreen = (closeMe, openMe) => {
     window.scrollTo(0, 0);
@@ -124,39 +146,47 @@ function App() {
   const handleShippingInputChange = ({ target: { name, value } }) => {
     let re = /.*/;
     let maxlength = 0;
-    switch (name) {
-      case "nameInput":
-      case "cityInput":
-        maxlength = 31;
-        re = /^([\p{L}]+[,.]?[ ]?|[\p{L}]+['-]?)*$/u;
-        break;
-      case "addressInput":
-        maxlength = 255;
-        re = /^([\w',-.#\s])*$/g;
-        break;
-      case "zipInput":
-        maxlength = 5;
-        re = /^\d*$/;
-        break;
-      case "cellArea":
-      case "phoneArea":
-        maxlength = 3;
-        re = /^\d*$/;
-        break;
-      case "cellInput":
-      case "phoneInput":
-        maxlength = 8;
-        re = /^\d*[\s.-]?\d*$/;
-        break;
-      default:
-        console.log(`${name} is not accounted for...`);
-    }
-    if (value.length <= maxlength && re.test(value)) {
-      setShippingInfo((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
+    setShippingInfoError(INIT_SHIPPING_INFO_ERROR);
+    setTimeout(() => {
+      switch (name) {
+        case "nameInput":
+        case "cityInput":
+          maxlength = 31;
+          re = /^([\p{L}]+[,.]?[ ]?|[\p{L}]+['-]?)*$/u;
+          break;
+        case "addressInput":
+          maxlength = 255;
+          re = /^([\w',-.#\s])*$/g;
+          break;
+        case "zipInput":
+          maxlength = 5;
+          re = /^\d*$/;
+          break;
+        case "cellArea":
+        case "phoneArea":
+          maxlength = 3;
+          re = /^\d*$/;
+          break;
+        case "cellInput":
+        case "phoneInput":
+          maxlength = 8;
+          re = /^\d*[\s.-]?\d*$/;
+          break;
+        default:
+          console.log(`${name} is not accounted for...`);
+      }
+      if (value.length <= maxlength && re.test(value)) {
+        setShippingInfo((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      } else {
+        setShippingInfoError({
+          errorMessage: `Character "${value[value.length - 1]}" not accepted`,
+          errorInput: "",
+        });
+      }
+    }, 50);
   };
 
   const handleShippingSelectChange = ({ target: { name, value } }) => {
@@ -167,12 +197,7 @@ function App() {
   };
 
   const handleShippingForm = () => {
-    // return !Object.values(shippingInfo).some((el) => el === "");
-    if (Object.values(shippingInfo).some((el) => el === "")) {
-      setShippingInfoError(INIT_SHIPPING_INFO_ERROR);
-      return false;
-    }
-    return true;
+    return !Object.values(shippingInfo).some((el) => el === "");
   };
 
   const handleShippingSubmit = () => {
@@ -249,12 +274,17 @@ function App() {
           errorInput: "phoneInput",
         });
       } else {
-            console.log("Here");
-        // setShippingInfoError(INIT_SHIPPING_INFO_ERROR);
-        return true;
+        setShippingInfoError(INIT_SHIPPING_INFO_ERROR);
+        handleShowScreen("shippingScreen", "paymentScreen");
       }
     }, 50);
-    return false;
+  };
+
+  const handleShippingRadio = ({ target: { value } }) => {
+    setShippingInfo((prevState) => ({
+      ...prevState,
+      shippingOption: value,
+    }));
   };
 
   return (
@@ -292,6 +322,7 @@ function App() {
           handleShippingSelectChange,
           handleShippingForm,
           handleShippingSubmit,
+          handleShippingRadio,
         }}
       />
       <PaymentScreen showScreen={showScreen} />

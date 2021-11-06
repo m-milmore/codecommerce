@@ -18,6 +18,7 @@ class ShippingScreen extends React.Component {
         handleShippingSelectChange,
         handleShippingForm,
         handleShippingSubmit,
+        handleShippingRadio,
       },
     } = this.props;
     return (
@@ -33,6 +34,8 @@ class ShippingScreen extends React.Component {
             shippingInfoError={shippingInfoError}
             handleShippingInputChange={handleShippingInputChange}
             handleShippingSelectChange={handleShippingSelectChange}
+            handleShippingRadio={handleShippingRadio}
+            handleShowScreen={handleShowScreen}
           />
         </div>
         <SummarySection

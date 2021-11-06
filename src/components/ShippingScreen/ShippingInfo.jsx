@@ -2,6 +2,7 @@ import React from "react";
 import "./ShippingInfo.css";
 import ShippingInput from "./ShippingInput";
 import ShippingSelect from "./ShippingSelect";
+import ShippingRadio from "./ShippingRadio";
 import { states } from "../../constants";
 
 const ShippingInfo = ({
@@ -17,16 +18,22 @@ const ShippingInfo = ({
     cellInput,
     phoneArea,
     phoneInput,
+    shippingOption,
   },
   shippingInfoError: { errorMessage, errorInput },
   handleShippingInputChange,
   handleShippingSelectChange,
+  handleShippingRadio,
+  handleShowScreen,
 }) => {
   const titles = ["Mr", "Mrs", "Ms", "Miss"];
   const country = ["USA"];
   const handleOnSubmit = (e) => {
     e.preventDefault();
   };
+  const handleClick = () => {
+    handleShowScreen("shippingScreen", "cartScreen");
+  }
 
   return (
     <div className="shipping-info-form-container">
@@ -126,9 +133,19 @@ const ShippingInfo = ({
       </form>
       <hr />
       <h4 className="h4-class">Shipping Method</h4>
-      <span className={`error ${errorMessage ? "slide" : ""}`}>
-        {errorMessage}
-      </span>
+      <ShippingRadio
+        shippingOption={shippingOption}
+        handleShippingRadio={handleShippingRadio}
+      />
+      <span className="shipping-details">View Shipping details</span>
+      <div className="back-and-error-container">
+        <div className="back-to-cart-btn" onClick={handleClick}>
+          <span>BACK TO CART</span>
+        </div>
+        <span className={`error ${errorMessage ? "slide" : ""}`}>
+          {errorMessage}
+        </span>
+      </div>
     </div>
   );
 };

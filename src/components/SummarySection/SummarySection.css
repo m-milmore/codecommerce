@@ -140,6 +140,10 @@
   font-weight: 700;
 }
 
+.discount-class.make-me-black {
+  color: black;
+}
+
 .summary-btn-container {
   width: 100%;
   margin-top: auto;

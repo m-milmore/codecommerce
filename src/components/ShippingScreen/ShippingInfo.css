@@ -9,6 +9,7 @@
   border-radius: 5px;
   height: 90%;
   width: 100%;
+  position: relative;
 }
 
 .shipping-info-form-container h4 {
@@ -37,7 +38,7 @@ form {
   justify-content: center;
   width: 100%;
   overflow: hidden;
-  margin: 0;
+  margin: 0 0 0 10px;
   padding: 10px;
   position: relative;
 }
@@ -72,12 +73,53 @@ form {
 @keyframes slidein2 {
   from {
     transform: translateY(100%);
-    /* transform: scale(0); */
+    transform: scale(0);
     /* transform: rotateX(0); */
   }
   to {
     transform: translateY(0);
-    /* transform: scale(100%); */
+    transform: scale(100%);
     /* transform: rotateX(360deg); */
   }
 }
+
+.shipping-details {
+  position: absolute;
+  left: 65%;
+  top: 537px;
+  color: rgb(204, 44, 83);
+  font-size: .8rem;
+  font-weight: 700;text-decoration: underline;
+  user-select: none;
+  cursor: pointer;
+}
+
+.back-and-error-container {
+  display: flex;
+  margin-top: auto;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+.back-to-cart-btn {
+  border: 2px solid rgb(88, 88, 88);
+  color: black;
+  font-weight: 800;
+  font-size: .8rem;
+  border-radius: 5px;
+  padding: 10px 20px 10px 10px;
+  user-select: none;
+  margin-top: auto;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.back-to-cart-btn:hover {
+  background-color: rgb(234, 235, 238);
+}
+
+.back-to-cart-btn:active {
+  text-decoration: underline;
+}
+

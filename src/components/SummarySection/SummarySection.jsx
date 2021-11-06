@@ -55,10 +55,16 @@ const SummarySection = ({
         <span>Cart Subtotal:</span>
         <span className="a-right dark">{formatter.format(cartSubTotal)}</span>
         <span>Shipping & Handling:</span>
-        <span className="a-right dark">-</span>
+        <span className="a-right dark">
+          {shippingHandling === 0 ? "-" : formatter.format(shippingHandling)}
+        </span>
         <span>Discount:</span>
-        <span className="discount-class a-right">
-          {showScreen.cartScreen ? "-" : formatter.format(discount * -1)}
+        <span
+          className={`discount-class a-right ${
+            discount === 0 ? "make-me-black" : ""
+          }`}
+        >
+          {discount === 0 ? "-" : formatter.format(discount * -1)}
         </span>
         <span className="dark">Cart Total:</span>
         <span className="a-right dark red">
@@ -76,9 +82,7 @@ const SummarySection = ({
           onClick={() => {
             showScreen.cartScreen &&
               handleShowScreen("cartScreen", "shippingScreen");
-            showScreen.shippingScreen &&
-              handleShippingSubmit() &&
-              handleShowScreen("shippingScreen", "paymentScreen");
+            showScreen.shippingScreen && handleShippingSubmit();
             showScreen.paymentScreen &&
               handleShowScreen("paymentScreen", "confirmationScreen");
           }}
