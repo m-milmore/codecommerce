@@ -1,13 +1,19 @@
 .shipping-select-container {
   width: 100%;
   margin: 0;
-  padding: 0 0 15px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-.shipping-select-container label {
+.shipping-select-container.countryInput {
+  position: absolute;
+  left: 68%;
+  top: 206px;
+}
+
+.shipping-select-container .select-label {
   user-select: none;
   font-size: 0.8rem;
   color: black;
@@ -16,6 +22,10 @@
   padding: 0;
   font-weight: 700;
   text-align: left;
+}
+
+.select-label.countryInput {
+  flex: 0 1 12%;
 }
 
 .select-container {
@@ -45,4 +55,5 @@
 
 .select-container select:focus {
   border: none;
+  box-shadow: 0 0 3pt 2pt #719ECE;
 }

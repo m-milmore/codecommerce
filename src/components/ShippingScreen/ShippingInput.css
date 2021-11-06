@@ -1,19 +1,25 @@
 .shipping-input-container {
   width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 10px 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-.shipping-input-container label {
+.shipping-input-container .label {
   user-select: none;
   font-size: 0.8rem;
   color: black;
   flex: 0 1 17%;
   margin: 0;
   padding: 0;
+}
+
+label.label.addressInput,
+label.label.cellArea,
+label.label.phoneArea {
+  flex: 0 1 17%;
 }
 
 .shipping-input-container input {
@@ -23,4 +29,72 @@
   line-height: 1.75rem;
   padding-left: 5px;
   flex: 0 1 50%;
+}
+
+.shipping-input-container .cellArea.red-bg,
+.shipping-input-container .phoneArea.red-bg {
+  background-color: rgba(256, 0, 0, 0.25);
+  border: 1px solid rgba(256, 0, 0, 0.75);
+  border-left: 1px solid rgba(256, 0, 0, 0.75);
+}
+
+.shipping-input-container .addressInput {
+  flex: 0 1 80%;
+}
+
+.shipping-input-container.zipInput {
+  position: absolute;
+  left: 40%;
+  top: 206px;
+}
+
+.shipping-input-container .label.zipInput {
+  flex: 0 1 12%;
+}
+
+.shipping-input-container .zipInput {
+  flex: 0 1 13%;
+}
+
+.shipping-input-container .cellArea,
+.shipping-input-container .phoneArea {
+  flex: 0 1 8%;
+  border-left: none;
+  /* padding: 0; */
+}
+
+.shipping-input-container .div-span {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 1px solid rgb(213, 213, 213);
+  margin: 0;
+  padding: 2px 5px;
+  border-right: none;
+}
+
+.shipping-input-container .div-span span {
+  font-size: 1.2rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  margin-top: -4px;
+  padding-right: 2px;
+  color: rgb(213, 213, 213);
+}
+
+.shipping-input-container label.label.cellInput,
+.shipping-input-container label.label.phoneInput {
+  display: none;
+}
+
+.shipping-input-container.cellInput {
+  position: absolute;
+  left: 32%;
+  top: 255px;
+}
+
+.shipping-input-container.phoneInput {
+  position: absolute;
+  left: 32%;
+  top: 304px;
 }

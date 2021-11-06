@@ -4,15 +4,12 @@ import { formatter } from "../../constants";
 import ShippingItem from "./ShippingItem";
 
 const SummarySection = ({
-  account: {
-    itemData,
-    cartSubTotal,
-    shippingHandling,
-    discount,
-    shippingFormFilled,
-  },
-  handleShowScreen,
+  account: { itemData, cartSubTotal, shippingHandling, discount },
   showScreen,
+  handleShowScreen,
+  handleShippingInfo,
+  handleShippingForm,
+  handleShippingSubmit,
 }) => {
   return (
     <div className="summary-section">
@@ -42,7 +39,7 @@ const SummarySection = ({
               <b>
                 {itemData.length} {itemData.length > 1 ? "items" : "item"}
               </b>
-              in your bag.
+              &nbsp;in your bag.
             </span>
           </div>
           <hr />
@@ -74,12 +71,13 @@ const SummarySection = ({
           className="summary-btn"
           disabled={
             (showScreen.cartScreen && (!itemData || itemData.length === 0)) ||
-            (showScreen.shippingScreen && !shippingFormFilled)
+            (showScreen.shippingScreen && !handleShippingForm())
           }
           onClick={() => {
             showScreen.cartScreen &&
               handleShowScreen("cartScreen", "shippingScreen");
             showScreen.shippingScreen &&
+              handleShippingSubmit() &&
               handleShowScreen("shippingScreen", "paymentScreen");
             showScreen.paymentScreen &&
               handleShowScreen("paymentScreen", "confirmationScreen");

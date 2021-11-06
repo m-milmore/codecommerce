@@ -1,19 +1,18 @@
 import React from "react";
 import "./ShippingSelect.css";
 
-const ShippingSelect = ({ label, ...props }) => {
+const ShippingSelect = ({ label, name, options, ...props }) => {
   return (
-    <div className="shipping-select-container">
-      <label>{label}</label>
+    <div className={`shipping-select-container ${name}`}>
+      <label className={`select-label ${name}`}>{label}</label>
       <div className="select-container">
-        <select name="titles">
+        <select name={name} {...props}>
           <option value="">
             Select&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </option>
-          <option value="mr">Mr</option>
-          <option value="mrs">Mrs</option>
-          <option value="ms">Ms</option>
-          <option value="miss">Miss</option>
+          {options.map((option) => {
+            return <option key={option} value={option}>{option}</option>;
+          })}
         </select>
       </div>
     </div>

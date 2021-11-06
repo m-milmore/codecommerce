@@ -9,11 +9,21 @@ class CartScreen extends React.Component {
     const {
       showScreen,
       account,
-      handleProps: { handleShowScreen, handleRemoveItem, handleChangeQuantity },
+      handleProps: {
+        handleShowScreen,
+        handleRemoveItem,
+        handleChangeQuantity,
+        handleShippingForm,
+        handleShippingSubmit,
+      },
     } = this.props;
 
     return (
-      <div className={`cart-screen-container ${showScreen.cartScreen ? "open" : ""}`}>
+      <div
+        className={`cart-screen-container ${
+          showScreen.cartScreen ? "open" : ""
+        }`}
+      >
         <NavbarSection
           username={account.username}
           handleShowScreen={handleShowScreen}
@@ -33,6 +43,8 @@ class CartScreen extends React.Component {
             account={account}
             handleShowScreen={handleShowScreen}
             showScreen={showScreen}
+            handleShippingForm={handleShippingForm}
+            handleShippingSubmit={handleShippingSubmit}
           />
         </div>
       </div>

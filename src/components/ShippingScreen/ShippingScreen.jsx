@@ -3,9 +3,23 @@ import "./ShippingScreen.css";
 import SummarySection from "../SummarySection/SummarySection";
 import ProgressBullets from "../ProgressBullets/ProgressBullets";
 import ShippingInfo from "./ShippingInfo";
+
 class ShippingScreen extends React.Component {
+
   render(props) {
-    const { account, showScreen, handleProps: {handleShowScreen, handleShippingForm} } = this.props;
+    const {
+      account,
+      showScreen,
+      shippingInfo,
+      shippingInfoError,
+      handleProps: {
+        handleShowScreen,
+        handleShippingInputChange,
+        handleShippingSelectChange,
+        handleShippingForm,
+        handleShippingSubmit,
+      },
+    } = this.props;
     return (
       <div
         className={`shipping-screen-container ${
@@ -14,12 +28,19 @@ class ShippingScreen extends React.Component {
       >
         <div>
           <ProgressBullets showScreen={showScreen} />
-          <ShippingInfo handleShippingForm={handleShippingForm}/>
+          <ShippingInfo
+            shippingInfo={shippingInfo}
+            shippingInfoError={shippingInfoError}
+            handleShippingInputChange={handleShippingInputChange}
+            handleShippingSelectChange={handleShippingSelectChange}
+          />
         </div>
         <SummarySection
           account={account}
-          handleShowScreen={handleShowScreen}
           showScreen={showScreen}
+          handleShowScreen={handleShowScreen}
+          handleShippingForm={handleShippingForm}
+          handleShippingSubmit={handleShippingSubmit}
         />
       </div>
     );

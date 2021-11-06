@@ -73,10 +73,12 @@ class LoginSignupScreen extends React.Component {
     switch (name) {
       case "emailInput":
         break;
-      case ("passwordInput", "confirmPasswordInput"):
+      case "passwordInput":
+      case "confirmPasswordInput":
         re = /^[-A-Za-z0-9!@#$%^&*()_+]*$/;
         break;
-      case ("firstNameInput", "lastNameInput"):
+      case "firstNameInput":
+      case "lastNameInput":
         re = /^[-A-Za-z0-9]*$/;
         break;
       case "postalCodeInput":
