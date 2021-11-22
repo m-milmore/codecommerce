@@ -5,8 +5,8 @@
   width: 100%;
   padding: 0;
   margin: 8px 0;
-	background-color: rgba(0, 0, 0, 0.035);
-	border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.035);
+  border-radius: 4px;
 }
 
 .shipping-item-img-container {
@@ -42,12 +42,16 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   text-align: left;
   width: 100%;
   height: 100%;
   padding: 0 5px;
   user-select: none;
+}
+
+.shipping-info-container.conf-screen {
+  justify-content: center;
 }
 
 .shipping-info-container h4 {
@@ -57,9 +61,20 @@
   margin: 0;
   padding: 0;
   margin-bottom: auto;
+  width: 100%;
 }
 
-.shipping-info-container span {
+.shipping-info-container h4.conf-screen {
+  margin-bottom: 20px;
+}
+
+.desc-price-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.desc-price-container span {
   color: black;
   font-size: 0.75rem;
   margin: 0;
@@ -75,4 +90,5 @@
 
 .shipping-item-total-price {
   font-weight: 900;
+  text-align: right;
 }

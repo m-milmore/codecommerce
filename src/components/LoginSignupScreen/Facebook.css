@@ -26,9 +26,13 @@
 	position: relative;
 }
 
+.fb-btn .fa {
+  font-size: 1.75rem;
+}
+
 .fa-facebook-square {
 	position: absolute;
   font-size: 1.75rem;
-	bottom: -5px;
+	bottom: -7px;
 	left: 70px;
 }

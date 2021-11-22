@@ -1,7 +1,13 @@
-import React from "react";
-import "./ShippingRadio.css";
+import React, { useContext } from "react";
+import "./InfoRadio.css";
+import { HandleContext } from "../../App";
 
-const ShippingRadio = ({ shippingOption, handleShippingRadio }) => {
+const InfoRadio = () => {
+  const {
+    shippingInfo: { shippingOption },
+    handleSelectRadioChange,
+  } = useContext(HandleContext);
+
   return (
     <div className="shipping-radio-container">
       <input
@@ -10,10 +16,10 @@ const ShippingRadio = ({ shippingOption, handleShippingRadio }) => {
         name="shippingOption"
         value="standard"
         checked={shippingOption === "standard"}
-        onChange={handleShippingRadio}
+        onChange={handleSelectRadioChange("setShippingInfo")}
         className="shipping-radio-input"
       />
-      <label className="shipping-radio-label">Standard</label>
+      <label className="shipping-radio-label" htmlFor="standard">Standard</label>
       <span className="shipping-radio-span">
         Delivery in 4-6 Business Days - Free ($40 min.)
       </span>
@@ -23,10 +29,10 @@ const ShippingRadio = ({ shippingOption, handleShippingRadio }) => {
         name="shippingOption"
         value="express"
         checked={shippingOption === "express"}
-        onChange={handleShippingRadio}
+        onChange={handleSelectRadioChange("setShippingInfo")}
         className="shipping-radio-input"
       />
-      <label className="shipping-radio-label">Express</label>
+      <label className="shipping-radio-label" htmlFor="express">Express</label>
       <span className="shipping-radio-span">
         Delivery in 1-3 Business Days - $5.00
       </span>
@@ -34,4 +40,4 @@ const ShippingRadio = ({ shippingOption, handleShippingRadio }) => {
   );
 };
 
-export default ShippingRadio;
+export default InfoRadio;

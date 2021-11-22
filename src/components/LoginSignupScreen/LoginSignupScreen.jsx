@@ -38,7 +38,7 @@ class LoginSignupScreen extends React.Component {
   }
 
   handleCloseButton = () => {
-    const { handleShowScreen } = this.props.handleProps;
+    const { handleShowScreen } = this.props;
     this.setState(INIT_STATE);
     handleShowScreen("loginScreen", "startButton");
   };
@@ -79,7 +79,7 @@ class LoginSignupScreen extends React.Component {
         break;
       case "firstNameInput":
       case "lastNameInput":
-        re = /^[-A-Za-z0-9]*$/;
+        re = /^([\p{L}]+[,.]?[ ]?|[\p{L}]+['-]?)*$/u;
         break;
       case "postalCodeInput":
         re = /^[0-9]*$/;
@@ -152,7 +152,7 @@ class LoginSignupScreen extends React.Component {
   };
 
   gotoCartScreen = (username) => {
-    const { handleUsername, handleShowScreen } = this.props.handleProps;
+    const { handleUsername, handleShowScreen } = this.props;
     this.setState({
       errorMessage: false,
       passwordMessage: false,
@@ -161,7 +161,7 @@ class LoginSignupScreen extends React.Component {
       confirmPasswordType: "password",
       confirmEyeIcon: EYE_ICONS["SHOW"],
     });
-    handleUsername(username);
+    handleUsername(username, this.state.emailInput);
     handleShowScreen("loginScreen", "cartScreen");
   };
 

@@ -1,7 +1,7 @@
 import React from "react";
-import "./ShippingInput.css";
+import "./InfoInput.css";
 
-const ShippingInput = ({ label, name, errorInput, ...props }) => {
+const InfoInput = ({ label, name, errorInput, ...props }) => {
   return (
     <div className={`shipping-input-container ${name}`}>
       <label className={`label ${name}`}>{label}</label>
@@ -16,8 +16,9 @@ const ShippingInput = ({ label, name, errorInput, ...props }) => {
         className={`${name} ${errorInput === name ? "red-bg" : ""}`}
         {...props}
       />
+      {name === "cvv" && <i className="far fa-question-circle"></i>}
     </div>
   );
 };
 
-export default ShippingInput;
+export default InfoInput;

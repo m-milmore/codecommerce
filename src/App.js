@@ -4,9 +4,12 @@ import LoginSignupScreen from "./components/LoginSignupScreen/LoginSignupScreen"
 import CartScreen from "./components/CartScreen/CartScreen";
 import ShippingScreen from "./components/ShippingScreen/ShippingScreen";
 import PaymentScreen from "./components/PaymentScreen/PaymentScreen";
-import { items } from "./constants";
+import ConfirmationScreen from "./components/ConfirmationScreen/ConfirmationScreen";
+import { items, months } from "./constants";
 
-const INIT_SHIPPING_INFO_ERROR = {
+export const HandleContext = React.createContext();
+
+const INIT_INFO_ERROR = {
   errorMessage: "",
   errorInput: "",
 };
@@ -16,7 +19,7 @@ const highestZip = 99950;
 const smallestArea = 201;
 const highestArea = 989;
 
-function App() {
+const App = () => {
   const [showScreen, setShowScreen] = useState({
     startButton: false,
     loginScreen: false,
@@ -32,10 +35,11 @@ function App() {
     cartSubTotal: 0,
     shippingHandling: 0,
     discount: 0,
+    email: "",
   });
 
   const [shippingInfo, setShippingInfo] = useState({
-    titleInput: "Miss",
+    titleInput: "Mrs",
     nameInput: "elanor",
     addressInput: "e street",
     cityInput: "e-city",
@@ -49,9 +53,26 @@ function App() {
     shippingOption: "standard",
   });
 
-  const [shippingInfoError, setShippingInfoError] = useState(
-    INIT_SHIPPING_INFO_ERROR
-  );
+  const [paymentInfo, setPaymentInfo] = useState({
+    cardholderName: "card-holder's-name",
+    cardNumber: "4111111111111111",
+    expMonth: "December",
+    expYear: "2022",
+    cvv: "123",
+    issuer: "",
+    issuerLogo: "",
+  });
+
+  const [infoError, setInfoError] = useState(INIT_INFO_ERROR);
+
+  const getterMap = { shippingInfo, paymentInfo };
+
+  const setterMap = { setShippingInfo, setPaymentInfo };
+
+  const setterGetter = {
+    setShippingInfo: "shippingInfo",
+    setPaymentInfo: "paymentInfo",
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -88,13 +109,8 @@ function App() {
       ...prevState,
       discount: startButton || loginScreen || cartScreen ? 0 : 4.5,
     }));
+    setInfoError(INIT_INFO_ERROR);
   }, [showScreen]);
-
-  useEffect(() => {
-    if (Object.values(shippingInfo).some((el) => el === "")) {
-      setShippingInfoError(INIT_SHIPPING_INFO_ERROR);
-    }
-  }, [shippingInfo]);
 
   useEffect(() => {
     setAccount((prevState) => ({
@@ -102,6 +118,19 @@ function App() {
       shippingHandling: shippingInfo.shippingOption === "standard" ? 0 : 5,
     }));
   }, [shippingInfo.shippingOption]);
+
+  useEffect(() => {
+    if (
+      Object.values(shippingInfo).some((el) => el === "") ||
+      Object.values(paymentInfo).some((el) => el === "")
+    ) {
+      setInfoError(INIT_INFO_ERROR);
+    }
+  }, [shippingInfo, paymentInfo]);
+
+  useEffect(() => {
+    cardIssuer(paymentInfo.cardNumber);
+  }, [paymentInfo.cardNumber]);
 
   const handleShowScreen = (closeMe, openMe) => {
     window.scrollTo(0, 0);
@@ -112,10 +141,11 @@ function App() {
     }));
   };
 
-  const handleUsername = (username) => {
+  const handleUsername = (username, email) => {
     setAccount((prevState) => ({
       ...prevState,
       username,
+      email,
     }));
   };
 
@@ -143,14 +173,86 @@ function App() {
     }));
   };
 
-  const handleShippingInputChange = ({ target: { name, value } }) => {
-    let re = /.*/;
-    let maxlength = 0;
-    setShippingInfoError(INIT_SHIPPING_INFO_ERROR);
-    setTimeout(() => {
+  const getDifference = (value, prevValue) => {
+    for (const [i, c] of [...value].entries()) {
+      if (c !== [...prevValue][i]) return c;
+    }
+    return value[value.length - 1];
+  };
+
+  const cardIssuer = (cardNumber) => {
+    const card = cardNumber.replaceAll(" ", "");
+    let issuer = "undefined";
+    let issuerLogo = "undefined";
+    if (card.charAt(0) === "4" && (card.length === 13 || card.length === 16)) {
+      issuer = "Visa";
+      issuerLogo = "fab fa-cc-visa";
+    } else if (
+      card.length === 16 &&
+      parseInt(card.substring(0, 2)) >= 51 &&
+      parseInt(card.substring(0, 2)) <= 55
+    ) {
+      issuer = "MasterCard";
+      issuerLogo = "fab fa-cc-mastercard";
+    } else if (
+      card.length === 16 &&
+      parseInt(card.substring(0, 4)) >= 2221 &&
+      parseInt(card.substring(0, 4)) <= 2720
+    ) {
+      issuer = "MasterCard";
+      issuerLogo = "fab fa-cc-mastercard";
+    } else if (
+      card.length === 15 &&
+      (card.substring(0, 2) === "34" || card.substring(0, 2) === "37")
+    ) {
+      issuer = "Amex";
+      issuerLogo = "fab fa-cc-amex";
+    } else if (
+      card.length === 14 &&
+      parseInt(card.substring(0, 3)) >= 300 &&
+      parseInt(card.substring(0, 3)) <= 305
+    ) {
+      issuer = "Diners Club";
+      issuerLogo = "fab fa-cc-diners-club";
+    } else if (
+      card.length === 14 &&
+      (card.substring(0, 2) === "36" || card.substring(0, 2) === "38")
+    ) {
+      issuer = "Diners Club";
+      issuerLogo = "fab fa-cc-diners-club";
+    } else if (
+      card.length === 16 &&
+      (card.substring(0, 4) === "6011" || card.substring(0, 2) === "65")
+    ) {
+      issuer = "Discover";
+      issuerLogo = "fab fa-cc-discover";
+    } else if (
+      (card.length === 15 || card.length === 16) &&
+      (card.substring(0, 4) === "2131" ||
+        card.substring(0, 4) === "1800" ||
+        card.substring(0, 2) === "35")
+    ) {
+      issuer = "JCB";
+      issuerLogo = "fab fa-cc-jcb";
+    }
+    setPaymentInfo((prevState) => ({
+      ...prevState,
+      issuer: issuer,
+      issuerLogo: issuerLogo,
+    }));
+  };
+
+  const handleInputChange =
+    (setter) =>
+    ({ target: { name, value } }) => {
+      let re = /.*/;
+      let maxlength = 0;
+      let error = false;
+      setInfoError(INIT_INFO_ERROR);
       switch (name) {
         case "nameInput":
         case "cityInput":
+        case "cardholderName":
           maxlength = 31;
           re = /^([\p{L}]+[,.]?[ ]?|[\p{L}]+['-]?)*$/u;
           break;
@@ -172,44 +274,152 @@ function App() {
           maxlength = 8;
           re = /^\d*[\s.-]?\d*$/;
           break;
+        case "cardNumber":
+          maxlength = 19;
+          const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+          const digitCount = [...value].filter((c) => digits.includes(c));
+          re = digitCount.length > 16 ? /^\s*$/ : /^[\d\s]*$/;
+          break;
+        case "cvv":
+          maxlength = 4;
+          re = /^\d*$/;
+          break;
         default:
           console.log(`${name} is not accounted for...`);
       }
       if (value.length <= maxlength && re.test(value)) {
-        setShippingInfo((prevState) => ({
+        setterMap[setter]((prevState) => ({
           ...prevState,
           [name]: value,
         }));
       } else {
-        setShippingInfoError({
-          errorMessage: `Character "${value[value.length - 1]}" not accepted`,
-          errorInput: "",
-        });
+        error = true;
       }
-    }, 50);
+      if (error) {
+        const getter = setterGetter[setter];
+        const diff = getDifference(value, getterMap[getter][name]);
+        setTimeout(() => {
+          setInfoError({
+            errorMessage:
+              value.length > maxlength
+                ? "Field maximum length reached (including spaces if any)"
+                : `Character "${diff}" not accepted`,
+            errorInput: "",
+          });
+        }, 50);
+      }
+    };
+
+  const handleSelectRadioChange =
+    (setter) =>
+    ({ target: { name, value } }) => {
+      setterMap[setter]((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    };
+
+  const handleInputBlur =
+    (setter) =>
+    ({ target: { name, value } }) => {
+      switch (name) {
+        case "cellInput":
+        case "phoneInput":
+          if (value.length === 7 && /[^\s.-]/.test(value)) {
+            setterMap[setter]((prevState) => ({
+              ...prevState,
+              [name]: value.slice(0, 3) + "-" + value.slice(3),
+            }));
+          } else if (value.length === 8 && /[^\s.-]/.test(value.charAt(3))) {
+            const special = value.split("").filter((c) => /[^\d]/.test(c));
+            const newValue = value.replace(special, "");
+            setterMap[setter]((prevState) => ({
+              ...prevState,
+              [name]: newValue.slice(0, 3) + special + newValue.slice(3),
+            }));
+          }
+          break;
+        case "cardNumber":
+          const digits = value.replaceAll(" ", "");
+          switch (digits.length) {
+            case 13:
+              setterMap[setter]((prevState) => ({
+                ...prevState,
+                [name]:
+                  digits.slice(0, 4) +
+                  " " +
+                  digits.slice(4, 7) +
+                  " " +
+                  digits.slice(7, 10) +
+                  " " +
+                  digits.slice(10),
+              }));
+              break;
+            case 14:
+            case 15:
+              setterMap[setter]((prevState) => ({
+                ...prevState,
+                [name]:
+                  digits.slice(0, 4) +
+                  " " +
+                  digits.slice(4, 10) +
+                  " " +
+                  digits.slice(10),
+              }));
+              break;
+            case 16:
+              setterMap[setter]((prevState) => ({
+                ...prevState,
+                [name]:
+                  digits.slice(0, 4) +
+                  " " +
+                  digits.slice(4, 8) +
+                  " " +
+                  digits.slice(8, 12) +
+                  " " +
+                  digits.slice(12),
+              }));
+              break;
+            default:
+              console.log(`Only ${value.length} digit(s)`);
+          }
+          break;
+        default:
+          console.log(`HandleBlur function doesn't have a case for ${name}.`);
+      }
+    };
+
+  const handleForm = (getter) => {
+    return !Object.values(getterMap[getter]).some((el) => el === "");
   };
 
-  const handleShippingSelectChange = ({ target: { name, value } }) => {
-    setShippingInfo((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const isCardExpired = (month, year) => {
+    const currentYear = new Date().getFullYear(); // number
+    const currentMonth = new Date().getMonth(); // number, 0 based, ie, January = 0
+    const monthIndex = months.findIndex((ele) => ele === month);
+    return parseInt(year) === currentYear && monthIndex < currentMonth;
   };
 
-  const handleShippingForm = () => {
-    return !Object.values(shippingInfo).some((el) => el === "");
-  };
-
-  const handleShippingSubmit = () => {
+  const handleSubmit = () => {
+    const { shippingScreen, paymentScreen } = showScreen;
     const { zipInput, cellArea, phoneArea, cellInput, phoneInput } =
       shippingInfo;
-    setShippingInfoError((prevState) => ({
+    const { cardNumber, expMonth, expYear, cvv, issuer } = paymentInfo;
+    const reStr =
+      "^4[0-9]{12}(?:[0-9]{3})?$" +
+      "|^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$" +
+      "|^3[47][0-9]{13}$" +
+      "|^3(?:0[0-5]|[68][0-9])[0-9]{11}$" +
+      "|^6(?:011|5[0-9]{2})[0-9]{12}$" +
+      "|^(?:2131|1800|35[0-9]{3})[0-9]{11}$";
+    const ccre = new RegExp(reStr);
+    setInfoError((prevState) => ({
       ...prevState,
       errorMessage: "",
     }));
     setTimeout(() => {
       if (!(zipInput.length === 5)) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: "5 digits required for zip code",
           errorInput: "zipInput",
         });
@@ -217,12 +427,12 @@ function App() {
         parseInt(zipInput) < lowestZip ||
         parseInt(zipInput) > highestZip
       ) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: `Zip code must be between ${lowestZip} and ${highestZip} inclusively`,
           errorInput: "zipInput",
         });
       } else if (!(cellArea.length === 3)) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: "3 digits required for cell phone area code",
           errorInput: "cellArea",
         });
@@ -230,12 +440,12 @@ function App() {
         parseInt(cellArea) < smallestArea ||
         parseInt(cellArea) > highestArea
       ) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: `Cell Phone area code must be between ${smallestArea} and ${highestArea} inclusively`,
           errorInput: "cellArea",
         });
       } else if (cellInput.replace(/[\s.-]/, "").length < 7) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: `Cell Phone number must have 7 digits`,
           errorInput: "cellInput",
         });
@@ -243,12 +453,12 @@ function App() {
         cellInput.replace(/[\s.-]/, "")[0] === "0" ||
         cellInput.replace(/[\s.-]/, "")[0] === "1"
       ) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: `Cell Phone number cannot start with 0 or 1`,
           errorInput: "cellInput",
         });
       } else if (!(phoneArea.length === 3)) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: "3 digits required for telephone area code",
           errorInput: "phoneArea",
         });
@@ -256,12 +466,12 @@ function App() {
         parseInt(phoneArea) < smallestArea ||
         parseInt(phoneArea) > highestArea
       ) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: `Telephone area code must be between ${smallestArea} and ${highestArea} inclusively`,
           errorInput: "phoneArea",
         });
       } else if (phoneInput.replace(/[\s.-]/, "").length < 7) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: `Phone number must have 7 digits`,
           errorInput: "phoneInput",
         });
@@ -269,65 +479,83 @@ function App() {
         phoneInput.replace(/[\s.-]/, "")[0] === "0" ||
         phoneInput.replace(/[\s.-]/, "")[0] === "1"
       ) {
-        setShippingInfoError({
+        setInfoError({
           errorMessage: `Phone number cannot start with 0 or 1`,
           errorInput: "phoneInput",
         });
+      } else if (paymentScreen && cardNumber.replaceAll(" ", "").length < 13) {
+        setInfoError({
+          errorMessage: `Card number missing digits`,
+          errorInput: "cardNumber",
+        });
+      } else if (paymentScreen && !ccre.test(cardNumber.replaceAll(" ", ""))) {
+        setInfoError({
+          errorMessage: `Invalid card number`,
+          errorInput: "cardNumber",
+        });
+      } else if (paymentScreen && isCardExpired(expMonth, expYear)) {
+        setInfoError({
+          errorMessage: `Card expired`,
+          errorInput: "",
+        });
+      } else if (paymentScreen && issuer === "Amex" && cvv.length !== 4) {
+        setInfoError({
+          errorMessage: `4 digits for Amex cvv`,
+          errorInput: "cvv",
+        });
+      } else if (paymentScreen && issuer !== "Amex" && cvv.length !== 3) {
+        setInfoError({
+          errorMessage: `3 digits for Visa, MC, Diners Club, Discover and JCB cvv`,
+          errorInput: "cvv",
+        });
       } else {
-        setShippingInfoError(INIT_SHIPPING_INFO_ERROR);
-        handleShowScreen("shippingScreen", "paymentScreen");
+        setInfoError(INIT_INFO_ERROR);
+        shippingScreen && handleShowScreen("shippingScreen", "paymentScreen");
+        paymentScreen &&
+          handleShowScreen("paymentScreen", "confirmationScreen");
       }
     }, 50);
   };
 
-  const handleShippingRadio = ({ target: { value } }) => {
-    setShippingInfo((prevState) => ({
-      ...prevState,
-      shippingOption: value,
-    }));
+  const handles = {
+    showScreen,
+    account,
+    shippingInfo,
+    paymentInfo,
+    infoError,
+    handleShowScreen,
+    handleUsername,
+    handleRemoveItem,
+    handleChangeQuantity,
+    handleInputChange,
+    handleSelectRadioChange,
+    handleInputBlur,
+    handleForm,
+    handleSubmit,
   };
 
   return (
-    <div className="App">
-      <h3>Welcome to Code Commerce</h3>
-      <button
-        onClick={() => handleShowScreen("startButton", "loginScreen")}
-        className={`start-button ${showScreen.startButton ? "open" : ""}`}
-      >
-        Click Here to Start
-      </button>
-      <LoginSignupScreen
-        showScreen={showScreen}
-        handleProps={{ handleShowScreen, handleUsername }}
-      />
-      <CartScreen
-        showScreen={showScreen}
-        account={account}
-        handleProps={{
-          handleShowScreen,
-          handleRemoveItem,
-          handleChangeQuantity,
-          handleShippingForm,
-          handleShippingSubmit,
-        }}
-      />
-      <ShippingScreen
-        showScreen={showScreen}
-        account={account}
-        shippingInfo={shippingInfo}
-        shippingInfoError={shippingInfoError}
-        handleProps={{
-          handleShowScreen,
-          handleShippingInputChange,
-          handleShippingSelectChange,
-          handleShippingForm,
-          handleShippingSubmit,
-          handleShippingRadio,
-        }}
-      />
-      <PaymentScreen showScreen={showScreen} />
-    </div>
+    <HandleContext.Provider value={handles}>
+      <div className="App">
+        <h3>Welcome to Code Commerce</h3>
+        <button
+          onClick={() => handleShowScreen("startButton", "loginScreen")}
+          className={`start-button ${showScreen.startButton ? "open" : ""}`}
+        >
+          Click Here to Start
+        </button>
+        <LoginSignupScreen
+          showScreen={showScreen}
+          handleShowScreen={handleShowScreen}
+          handleUsername={handleUsername}
+        />
+        <CartScreen />
+        <ShippingScreen />
+        <PaymentScreen />
+        <ConfirmationScreen />
+      </div>
+    </HandleContext.Provider>
   );
-}
+};
 
 export default App;

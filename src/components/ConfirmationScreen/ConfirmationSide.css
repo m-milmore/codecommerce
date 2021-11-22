@@ -1,0 +1,77 @@
+.confirmation-side-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.confirmation-side-container h4 {
+  text-transform: uppercase;
+  user-select: none;
+  margin: 0;
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  width: 100%;
+  text-align: left;
+}
+
+.confirmation-side-container hr {
+  border: 0;
+  border-top: 2px solid rgba(88, 88, 88, 0.1);
+  width: 95%;
+  margin: 0;
+  margin-left: 5px;
+}
+
+.checkmark-container {
+width: 30%;
+padding: 0;
+margin: 100px 0 50px;
+align-self: center;
+}
+
+.fa-check.conf-screen {
+  color: rgb(204, 44, 82);
+  border: 7px solid rgb(204, 44, 82);
+  border-radius: 100%;
+  padding: 10px 8px 5px 5px;
+  font-size: 3rem;
+}
+
+.confirmation-side-container h3 {
+  text-transform: uppercase;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  width: 100%;
+  text-align: center;
+}
+
+.confirmation-side-container span {
+  font-size: .75rem;
+  padding: 20px 70px;
+  margin: 0;
+  color: rgb(189, 189, 189);
+  user-select: none;
+}
+
+h4.track-order {
+  color: white;
+  background-color: black;
+  width: 40%;
+  align-self: center;
+  margin: 20px 0 ;
+  padding: 15px 0;
+  text-align: center;
+}

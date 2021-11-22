@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Items.css";
 import ItemRow from "./ItemRow";
+import { HandleContext } from "../../App";
 
-function Items({ items, handleRemoveItem, handleChangeQuantity }) {
+const Items = () => {
+  const {
+    account: { itemData },
+  } = useContext(HandleContext);
+  
   const tableHead = (
     <thead>
       <tr>
@@ -18,17 +23,12 @@ function Items({ items, handleRemoveItem, handleChangeQuantity }) {
     </thead>
   );
 
-  return items && items.length ? (
+  return itemData && itemData.length ? (
     <table className="table-class">
       {tableHead}
       <tbody>
-        {items.map((item) => (
-          <ItemRow
-            item={item}
-            key={item.id}
-            handleRemoveItem={handleRemoveItem}
-            handleChangeQuantity={handleChangeQuantity}
-          />
+        {itemData.map((item) => (
+          <ItemRow item={item} key={item.id} />
         ))}
       </tbody>
     </table>
@@ -41,6 +41,6 @@ function Items({ items, handleRemoveItem, handleChangeQuantity }) {
       </div>
     </>
   );
-}
+};
 
 export default Items;

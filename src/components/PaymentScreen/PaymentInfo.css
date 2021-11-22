@@ -1,4 +1,4 @@
-.shipping-info-form-container {
+.payment-info-form-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -12,7 +12,7 @@
   position: relative;
 }
 
-.shipping-info-form-container h4 {
+.payment-info-form-container h4 {
   text-transform: uppercase;
   user-select: none;
   margin: 0;
@@ -24,7 +24,7 @@
   text-align: left;
 }
 
-.shipping-info-form-container hr {
+.payment-info-form-container hr {
   border: 0;
   border-top: 2px solid rgba(88, 88, 88, 0.1);
   width: 95%;
@@ -42,20 +42,3 @@ form {
   padding: 10px;
   position: relative;
 }
-
-.shipping-info-form-container .h4-class {
-  padding: 10px 20px 20px 20px;
-}
-
-.shipping-details {
-  position: absolute;
-  left: 65%;
-  top: 537px;
-  color: rgb(204, 44, 83);
-  font-size: .8rem;
-  font-weight: 700;text-decoration: underline;
-  user-select: none;
-  cursor: pointer;
-}
-
-

@@ -1,0 +1,41 @@
+.summary-btn-container {
+  width: 100%;
+  margin-top: auto;
+}
+
+.summary-btn-container.payment-screen {
+	margin-top: 0;
+	text-align: left;
+}
+
+.summary-btn {
+  background-color: rgb(204, 44, 83);
+  color: white;
+  border: none;
+  width: 95%;
+  cursor: pointer;
+  margin: 10px 0;
+  height: 50px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.summary-btn.payment-screen {
+	width: 32%;
+	margin-left: 133px;
+}
+
+.summary-btn:hover {
+  background-color: rgb(244, 54, 103);
+}
+
+.summary-btn:active {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.summary-btn[disabled] {
+  background-color: gray;
+  pointer-events: none;
+  user-select: none;
+}

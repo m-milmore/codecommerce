@@ -98,3 +98,18 @@ label.label.phoneArea {
   left: 32%;
   top: 304px;
 }
+
+.shipping-input-container .cvv {
+  flex: 0 1 10%;
+}
+
+input.cvv {
+  margin-left: 45px;
+}
+
+.fa-question-circle {
+  color: rgba(203, 203, 203, 0.5);
+  font-size: 1rem;
+  padding-left: 20px;
+  cursor: pointer;
+}

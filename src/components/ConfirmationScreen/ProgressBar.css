@@ -1,0 +1,30 @@
+.progress-bar-container {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  height: 65%;
+}
+
+.progress-bar-container h4 {
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+  color: rgb(154, 154, 154);
+  user-select: none;
+  height: 100%;
+  padding-top: 8px;
+}
+
+h4.conf-segment {
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+	color: white;
+	background-color: rgb(87, 86, 86);
+}

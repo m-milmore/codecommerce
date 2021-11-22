@@ -1,18 +1,17 @@
-import React from "react";
+import React, {useContext} from "react";
 import "./ItemRow.css";
 import { formatter } from "../../constants";
 import ModalScreen from "../ModalScreen/ModalScreen";
+import { HandleContext } from "../../App";
 
-const ItemRow = ({
-  item: { id, image, title, desc, price, quantity },
-  handleRemoveItem,
-  handleChangeQuantity,
-}) => {
+const ItemRow = ({ item: { id, image, title, desc, price, quantity } }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleShowDialog = () => {
     setIsOpen(!isOpen);
   };
+
+  const { handleRemoveItem, handleChangeQuantity } = useContext(HandleContext);
 
   return (
     <>
@@ -53,7 +52,9 @@ const ItemRow = ({
                 onClick={() => handleChangeQuantity(id, 1)}
               ></i>
               <i
-                className={`fas fa-chevron-down ${quantity === 1 && "inactive"}`}
+                className={`fas fa-chevron-down ${
+                  quantity === 1 && "inactive"
+                }`}
                 onClick={() => handleChangeQuantity(id, -1)}
               ></i>
             </div>

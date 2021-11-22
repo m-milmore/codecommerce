@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./NavbarSection.css";
+import { HandleContext } from "../../App";
 
-const NavbarSection = ({ username, handleShowScreen }) => {
+const NavbarSection = () => {
+  const { account: {username}, handleShowScreen } = useContext(HandleContext);
+
   return (
     <div className="navbar">
       <span>Cart Screen</span>
