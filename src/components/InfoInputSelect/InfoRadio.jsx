@@ -4,6 +4,7 @@ import { HandleContext } from "../../App";
 
 const InfoRadio = () => {
   const {
+    account: { cartSubTotal },
     shippingInfo: { shippingOption },
     handleSelectRadioChange,
   } = useContext(HandleContext);
@@ -18,8 +19,16 @@ const InfoRadio = () => {
         checked={shippingOption === "standard"}
         onChange={handleSelectRadioChange("setShippingInfo")}
         className="shipping-radio-input"
+        disabled={cartSubTotal < 40}
       />
-      <label className="shipping-radio-label" htmlFor="standard">Standard</label>
+      <label
+        className={`shipping-radio-label ${
+          cartSubTotal < 40 ? "disable-label" : ""
+        }`}
+        htmlFor="standard"
+      >
+        Standard
+      </label>
       <span className="shipping-radio-span">
         Delivery in 4-6 Business Days - Free ($40 min.)
       </span>
@@ -32,7 +41,9 @@ const InfoRadio = () => {
         onChange={handleSelectRadioChange("setShippingInfo")}
         className="shipping-radio-input"
       />
-      <label className="shipping-radio-label" htmlFor="express">Express</label>
+      <label className="shipping-radio-label" htmlFor="express">
+        Express
+      </label>
       <span className="shipping-radio-span">
         Delivery in 1-3 Business Days - $5.00
       </span>

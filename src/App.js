@@ -39,26 +39,26 @@ const App = () => {
   });
 
   const [shippingInfo, setShippingInfo] = useState({
-    titleInput: "Mrs",
-    nameInput: "elanor",
-    addressInput: "e street",
-    cityInput: "e-city",
-    stateInput: "Alabama",
-    zipInput: "12345",
-    countryInput: "USA",
-    cellArea: "321",
-    cellInput: "7654321",
-    phoneArea: "456",
-    phoneInput: "2345678",
+    titleInput: "",
+    nameInput: "",
+    addressInput: "",
+    cityInput: "",
+    stateInput: "",
+    zipInput: "",
+    countryInput: "",
+    cellArea: "",
+    cellInput: "",
+    phoneArea: "",
+    phoneInput: "",
     shippingOption: "standard",
   });
 
   const [paymentInfo, setPaymentInfo] = useState({
-    cardholderName: "card-holder's-name",
-    cardNumber: "4111111111111111",
-    expMonth: "December",
-    expYear: "2022",
-    cvv: "123",
+    cardholderName: "",
+    cardNumber: "",
+    expMonth: "",
+    expYear: "",
+    cvv: "",
     issuer: "",
     issuerLogo: "",
   });
@@ -118,6 +118,14 @@ const App = () => {
       shippingHandling: shippingInfo.shippingOption === "standard" ? 0 : 5,
     }));
   }, [shippingInfo.shippingOption]);
+
+  useEffect(() => {
+    setShippingInfo((prevState) => ({
+      ...prevState,
+      shippingOption:
+        account.cartSubTotal < 40 ? "express" : prevState.shippingOption,
+    }));
+  }, [account.cartSubTotal]);
 
   useEffect(() => {
     if (

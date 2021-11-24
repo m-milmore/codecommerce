@@ -32,3 +32,13 @@
   padding: 0;
   line-height: 1.5rem;
 }
+
+.shipping-radio-input[disabled] {
+  border: 2px solid rgba(187, 187, 187, .25);
+  cursor:default;
+}
+
+.shipping-radio-label.disable-label {
+  cursor: default;
+  color: rgb(187, 187, 187);
+}

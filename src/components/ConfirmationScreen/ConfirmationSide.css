@@ -74,4 +74,6 @@ h4.track-order {
   margin: 20px 0 ;
   padding: 15px 0;
   text-align: center;
+  user-select: none;
+  cursor: pointer;
 }
