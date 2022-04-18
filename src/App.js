@@ -40,25 +40,25 @@ const App = () => {
 
   const [shippingInfo, setShippingInfo] = useState({
     titleInput: "",
-    nameInput: "",
-    addressInput: "",
-    cityInput: "",
+    nameInput: "First Last",
+    addressInput: "1 Avenue",
+    cityInput: "City Town",
     stateInput: "",
-    zipInput: "",
+    zipInput: "10001",
     countryInput: "",
-    cellArea: "",
-    cellInput: "",
-    phoneArea: "",
-    phoneInput: "",
+    cellArea: "201",
+    cellInput: "2345678",
+    phoneArea: "201",
+    phoneInput: "7654321",
     shippingOption: "standard",
   });
 
   const [paymentInfo, setPaymentInfo] = useState({
-    cardholderName: "",
-    cardNumber: "",
+    cardholderName: "First Last",
+    cardNumber: "4500 4500 4500 4500",
     expMonth: "",
     expYear: "",
-    cvv: "",
+    cvv: "150",
     issuer: "",
     issuerLogo: "",
   });
